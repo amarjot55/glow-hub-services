@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -16,9 +17,9 @@ import Profile from "./pages/Profile";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
 import BookService from "./pages/BookService";
-import ProviderOnboarding from "./pages/ProviderOnboarding";
-import ProfileSetup from "./pages/ProfileSetup";
-import ServicesSetup from "./pages/ServicesSetup";
+import ProviderOnboarding from "./pages/provider/Onboarding";
+import ProfileSetup from "./pages/provider/ProfileSetup";
+import ServicesSetup from "./pages/provider/ServicesSetup";
 
 const queryClient = new QueryClient();
 
