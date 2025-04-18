@@ -9,15 +9,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ServiceCategory } from "@/types";
-import { toast } from "@/hooks/use-toast";
 import { Plus, X } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface ServiceForm {
   name: string;
   category: ServiceCategory;
-  price: string;
-  duration: string;
   description: string;
+  duration: string;
+  price: string;
+  inHomeService: boolean;
 }
 
 export default function ServicesSetup() {
@@ -26,13 +27,14 @@ export default function ServicesSetup() {
     {
       name: "",
       category: ServiceCategory.HAIR,
-      price: "",
-      duration: "",
       description: "",
+      duration: "",
+      price: "",
+      inHomeService: false,
     },
   ]);
 
-  const handleServiceChange = (index: number, field: keyof ServiceForm, value: string) => {
+  const handleChange = (index: number, field: keyof ServiceForm, value: any) => {
     const updatedServices = [...services];
     updatedServices[index] = { ...updatedServices[index], [field]: value };
     setServices(updatedServices);
@@ -44,9 +46,10 @@ export default function ServicesSetup() {
       {
         name: "",
         category: ServiceCategory.HAIR,
-        price: "",
-        duration: "",
         description: "",
+        duration: "",
+        price: "",
+        inHomeService: false,
       },
     ]);
   };
@@ -62,7 +65,7 @@ export default function ServicesSetup() {
     // In a real app, this would send data to the backend
     toast({
       title: "Services saved!",
-      description: "Your profile is now complete",
+      description: "Your services have been configured successfully",
     });
     navigate("/provider/dashboard");
   };
@@ -73,7 +76,7 @@ export default function ServicesSetup() {
         <div className="max-w-3xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle>Set Up Your Services</CardTitle>
+              <CardTitle>Configure Your Services</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -93,60 +96,34 @@ export default function ServicesSetup() {
                       )}
                     </div>
 
-                    <div className="space-y-4">
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="space-y-2">
-                          <Label htmlFor={`name-${index}`}>Service Name</Label>
-                          <Input
-                            id={`name-${index}`}
-                            value={service.name}
-                            onChange={(e) => handleServiceChange(index, "name", e.target.value)}
-                            required
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor={`category-${index}`}>Category</Label>
-                          <Select
-                            value={service.category}
-                            onValueChange={(value) => handleServiceChange(index, "category", value)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {Object.values(ServiceCategory).map((category) => (
-                                <SelectItem key={category} value={category}>
-                                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
+                    <div className="grid gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor={`name-${index}`}>Service Name</Label>
+                        <Input
+                          id={`name-${index}`}
+                          value={service.name}
+                          onChange={(e) => handleChange(index, "name", e.target.value)}
+                          required
+                        />
                       </div>
 
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="space-y-2">
-                          <Label htmlFor={`price-${index}`}>Price ($)</Label>
-                          <Input
-                            id={`price-${index}`}
-                            type="number"
-                            value={service.price}
-                            onChange={(e) => handleServiceChange(index, "price", e.target.value)}
-                            required
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor={`duration-${index}`}>Duration (minutes)</Label>
-                          <Input
-                            id={`duration-${index}`}
-                            type="number"
-                            value={service.duration}
-                            onChange={(e) => handleServiceChange(index, "duration", e.target.value)}
-                            required
-                          />
-                        </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`category-${index}`}>Category</Label>
+                        <Select
+                          value={service.category}
+                          onValueChange={(value) => handleChange(index, "category", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.values(ServiceCategory).map((category) => (
+                              <SelectItem key={category} value={category}>
+                                {category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       <div className="space-y-2">
@@ -154,9 +131,33 @@ export default function ServicesSetup() {
                         <Textarea
                           id={`description-${index}`}
                           value={service.description}
-                          onChange={(e) => handleServiceChange(index, "description", e.target.value)}
+                          onChange={(e) => handleChange(index, "description", e.target.value)}
                           required
                         />
+                      </div>
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label htmlFor={`duration-${index}`}>Duration (minutes)</Label>
+                          <Input
+                            id={`duration-${index}`}
+                            type="number"
+                            value={service.duration}
+                            onChange={(e) => handleChange(index, "duration", e.target.value)}
+                            required
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor={`price-${index}`}>Price ($)</Label>
+                          <Input
+                            id={`price-${index}`}
+                            type="number"
+                            value={service.price}
+                            onChange={(e) => handleChange(index, "price", e.target.value)}
+                            required
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -173,7 +174,7 @@ export default function ServicesSetup() {
                 </Button>
 
                 <Button type="submit" className="w-full">
-                  Complete Setup
+                  Save Services
                 </Button>
               </form>
             </CardContent>
