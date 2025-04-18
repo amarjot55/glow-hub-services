@@ -16,6 +16,9 @@ import Profile from "./pages/Profile";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
 import BookService from "./pages/BookService";
+import ProviderOnboarding from "./pages/ProviderOnboarding";
+import ProfileSetup from "./pages/ProfileSetup";
+import ServicesSetup from "./pages/ServicesSetup";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +39,9 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/provider/dashboard" element={<ProviderDashboard />} />
               <Route path="/services/:serviceId" element={<BookService />} />
+              <Route path="/provider/onboarding" element={<ProviderOnboarding />} />
+              <Route path="/provider/profile-setup" element={<ProfileSetup />} />
+              <Route path="/provider/services-setup" element={<ServicesSetup />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
