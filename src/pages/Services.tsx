@@ -114,7 +114,7 @@ export default function Services() {
                             <SelectValue placeholder="All Categories" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">All Categories</SelectItem>
+                            <SelectItem value="all">All Categories</SelectItem>
                             {Object.values(ServiceCategory).map(category => (
                               <SelectItem key={category} value={category}>
                                 {category.charAt(0).toUpperCase() + category.slice(1)}
