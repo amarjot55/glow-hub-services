@@ -10,6 +10,11 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Services from "./pages/Services";
+import BookingHistory from "./pages/BookingHistory";
+import Messages from "./pages/Messages";
+import Notifications from "./pages/Notifications";
+import Profile from "./pages/Profile";
+import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,8 +30,11 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/services" element={<Services />} />
-              {/* Additional routes will be added as we build more pages */}
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/bookings" element={<BookingHistory />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/provider/dashboard" element={<ProviderDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
