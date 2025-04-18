@@ -61,6 +61,32 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// GlowHub colors
+				glow: {
+					50: '#fdf4ff',
+					100: '#fae8ff',
+					200: '#f5d0fe',
+					300: '#e9b8fc',
+					400: '#d990f5',
+					500: '#c163ed',
+					600: '#9d45d1',
+					700: '#8032ab',
+					800: '#6b2b8b',
+					900: '#5a2771',
+					950: '#3f1352',
+				},
+				salon: {
+					50: '#fcf9fd',
+					100: '#f6e9f9',
+					200: '#edd4f4',
+					300: '#e1b0ea',
+					400: '#d387dd',
+					500: '#c25fcf',
+					600: '#aa43b3',
+					700: '#8c3492',
+					800: '#732d76',
+					900: '#5f2761',
 				}
 			},
 			borderRadius: {
