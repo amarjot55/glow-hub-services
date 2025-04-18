@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -16,6 +15,7 @@ import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
+import BookService from "./pages/BookService";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +35,7 @@ const App = () => (
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/provider/dashboard" element={<ProviderDashboard />} />
+              <Route path="/services/:serviceId" element={<BookService />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
