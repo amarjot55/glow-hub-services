@@ -9,6 +9,44 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          created_at: string | null
+          id: string
+          payment_confirmed: boolean | null
+          professional_id: string | null
+          status: string | null
+          time_slot: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          payment_confirmed?: boolean | null
+          professional_id?: string | null
+          status?: string | null
+          time_slot?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          payment_confirmed?: boolean | null
+          professional_id?: string | null
+          status?: string | null
+          time_slot?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comics: {
         Row: {
           cover_image_url: string | null
@@ -166,6 +204,30 @@ export type Database = {
           },
         ]
       }
+      professionals: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string | null
+          profession: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          profession?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          profession?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -195,7 +257,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      sql: {
+        Args: { q: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

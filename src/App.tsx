@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -20,6 +19,7 @@ import BookService from "./pages/BookService";
 import ProviderOnboarding from "./pages/provider/Onboarding";
 import ProfileSetup from "./pages/provider/ProfileSetup";
 import ServicesSetup from "./pages/provider/ServicesSetup";
+import SQLEditorPage from "./pages/SQLEditorPage";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +43,7 @@ const App = () => (
               <Route path="/provider/onboarding" element={<ProviderOnboarding />} />
               <Route path="/provider/profile-setup" element={<ProfileSetup />} />
               <Route path="/provider/services-setup" element={<ServicesSetup />} />
+              <Route path="/sql-editor" element={<SQLEditorPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
