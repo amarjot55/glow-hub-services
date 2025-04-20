@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
+import { Json } from "@/integrations/supabase/types";
 
 export function SQLEditor() {
   const [query, setQuery] = useState("");
@@ -21,7 +22,18 @@ export function SQLEditor() {
         setError(error.message);
         setResult(null);
       } else {
-        setResult(data);
+        // Handle the data properly based on its structure
+        if (data === null) {
+          setResult([]);
+        } else if (Array.isArray(data)) {
+          setResult(data);
+        } else if (typeof data === 'object') {
+          // If data is a JSON object but not an array, wrap it in an array
+          setResult([data]);
+        } else {
+          // Convert primitive values to array with a single item
+          setResult([{ result: data }]);
+        }
         setError(null);
       }
     } catch (err) {
