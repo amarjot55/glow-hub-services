@@ -52,7 +52,7 @@ interface State {
   favourites: string[];
 }
 
-const KEY = 'glowhub-demo-v1';
+const KEY = 'glowhub-demo-v2';
 const uid = () => Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
 const daysFromNow = (d: number) => {
@@ -65,29 +65,29 @@ function seed(): State {
   return {
     bookings: [
       {
-        id: 'b1', serviceId: 's2', serviceName: 'Special Occasion Makeup', providerId: 'sp1', providerName: 'Emma Johnson',
-        clientId: 'c1', clientName: 'Sarah Johnson', date: daysFromNow(-12), time: '14:00', address: '123 Main St, Apt 4B, New York',
-        notes: 'Anniversary dinner', price: 120, platformFee: 24, status: 'completed', rating: 5,
+        id: 'b1', serviceId: 's2', serviceName: 'Party & Engagement Makeup', providerId: 'sp1', providerName: 'Priya Sharma',
+        clientId: 'c1', clientName: 'Neha Verma', date: daysFromNow(-12), time: '14:00', address: 'Tower B, DLF Park Place, Gurugram',
+        notes: 'Anniversary dinner', price: 3499, platformFee: 700, status: 'completed', rating: 5,
         review: 'Punctual, professional, and the makeup lasted all night.', createdAt: daysFromNow(-15),
       },
       {
-        id: 'b2', serviceId: 's5', serviceName: 'Gel Manicure', providerId: 'sp3', providerName: 'Maria Garcia',
-        clientId: 'c1', clientName: 'Sarah Johnson', date: daysFromNow(3), time: '11:00', address: '123 Main St, Apt 4B, New York',
-        price: 45, platformFee: 9, status: 'confirmed', createdAt: daysFromNow(-2),
+        id: 'b2', serviceId: 's5', serviceName: 'Gel Manicure', providerId: 'sp3', providerName: 'Meera Iyer',
+        clientId: 'c1', clientName: 'Neha Verma', date: daysFromNow(3), time: '11:00', address: 'Tower B, DLF Park Place, Gurugram',
+        price: 999, platformFee: 200, status: 'confirmed', createdAt: daysFromNow(-2),
       },
       {
-        id: 'b3', serviceId: 's1', serviceName: 'Bridal Makeup', providerId: 'sp1', providerName: 'Emma Johnson',
-        clientId: 'c2', clientName: 'Michael Brown', date: daysFromNow(6), time: '09:00', address: '88 Sunset Blvd, Los Angeles',
-        notes: 'Wedding party of 3', price: 250, platformFee: 50, status: 'pending', createdAt: daysFromNow(-1),
+        id: 'b3', serviceId: 's1', serviceName: 'Bridal Makeup (HD)', providerId: 'sp1', providerName: 'Priya Sharma',
+        clientId: 'c2', clientName: 'Rohan Mehta', date: daysFromNow(6), time: '09:00', address: 'Vasant Vihar, New Delhi',
+        notes: 'Sister’s wedding, plus 2 bridesmaids', price: 14999, platformFee: 3000, status: 'pending', createdAt: daysFromNow(-1),
       },
     ],
     messages: [
-      { id: 'm1', providerId: 'sp3', clientId: 'c1', from: 'provider', text: 'Hi Sarah! Looking forward to your manicure. Any colour in mind?', at: daysFromNow(-1) },
-      { id: 'm2', providerId: 'sp1', clientId: 'c2', from: 'client', text: 'Hi Emma, can you bring extra lashes for the bridesmaids?', at: daysFromNow(-1) },
+      { id: 'm1', providerId: 'sp3', clientId: 'c1', from: 'provider', text: 'Hi Neha! Looking forward to your manicure. Any colour in mind?', at: daysFromNow(-1) },
+      { id: 'm2', providerId: 'sp1', clientId: 'c2', from: 'client', text: 'Hi Priya, can you bring extra lashes for the bridesmaids?', at: daysFromNow(-1) },
     ],
     notifications: [
-      { id: 'n1', userId: 'c1', title: 'Booking confirmed', body: 'Maria Garcia confirmed your Gel Manicure.', link: '/bookings', at: daysFromNow(-1), read: false },
-      { id: 'n2', userId: 'sp1', title: 'New booking request', body: 'Michael Brown requested Bridal Makeup.', link: '/provider/dashboard', at: daysFromNow(-1), read: false },
+      { id: 'n1', userId: 'c1', title: 'Booking confirmed', body: 'Meera Iyer confirmed your Gel Manicure.', link: '/bookings', at: daysFromNow(-1), read: false },
+      { id: 'n2', userId: 'sp1', title: 'New booking request', body: 'Rohan Mehta requested Bridal Makeup (HD).', link: '/provider/dashboard', at: daysFromNow(-1), read: false },
     ],
     favourites: [],
   };

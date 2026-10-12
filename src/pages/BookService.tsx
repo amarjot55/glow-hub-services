@@ -13,6 +13,8 @@ import { Clock, MapPin, CalendarDays, Home } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDemo } from "@/contexts/DemoStore";
 import { DateTimePicker } from "@/components/bookings/BookingParts";
+import { getBrowserLocation, reverseGeocode } from "@/api/glowhub";
+import { LocateFixed } from "lucide-react";
 import { UserRole } from "@/types";
 
 export default function BookService() {
@@ -26,6 +28,19 @@ export default function BookService() {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
+  const [locating, setLocating] = useState(false);
+
+  const fillAddress = async () => {
+    setLocating(true);
+    try {
+      const { lat, lng } = await getBrowserLocation();
+      setAddress(await reverseGeocode(lat, lng));
+    } catch (e) {
+      toast({ title: "Couldn't detect your address", description: (e as Error).message, variant: "destructive" });
+    } finally {
+      setLocating(false);
+    }
+  };
 
   if (!service || !provider) {
     return (
@@ -67,6 +82,7 @@ export default function BookService() {
           <h1 className="text-3xl font-bold text-glow-800 mb-8">Book Service</h1>
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
+              {service.images?.[0] && <img src={service.images[0]} alt={service.name} className="h-48 w-full object-cover rounded-t-lg" />}
               <CardHeader><CardTitle>{service.name}</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-gray-600">{service.description}</p>
@@ -78,9 +94,11 @@ export default function BookService() {
                 <div className="pt-4 border-t">
                   <p className="font-medium mb-2">Provider</p>
                   <Link to={`/providers/${provider.id}`} className="flex items-center hover:opacity-80">
-                    <div className="h-10 w-10 rounded-full bg-glow-100 flex items-center justify-center mr-3">
-                      <span className="text-glow-600 font-medium">{provider.name.charAt(0)}</span>
-                    </div>
+                    {provider.avatar ? <img src={provider.avatar} alt="" className="h-10 w-10 rounded-full mr-3 bg-glow-100" /> : (
+                      <div className="h-10 w-10 rounded-full bg-glow-100 flex items-center justify-center mr-3">
+                        <span className="text-glow-600 font-medium">{provider.name.charAt(0)}</span>
+                      </div>
+                    )}
                     <div>
                       <p className="font-medium">{provider.name} · ⭐ {provider.rating}</p>
                       <p className="text-sm text-gray-500 flex items-center"><MapPin className="w-4 h-4 mr-1" />{provider.location.city}, {provider.location.state}</p>
@@ -100,7 +118,12 @@ export default function BookService() {
               <CardContent className="space-y-5">
                 <DateTimePicker date={selectedDate} time={selectedTime} onDate={setSelectedDate} onTime={setSelectedTime} />
                 <div>
-                  <Label htmlFor="address">Address for the visit</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="address">Address for the visit</Label>
+                    <Button type="button" variant="ghost" size="sm" onClick={fillAddress} disabled={locating}>
+                      <LocateFixed className="w-4 h-4 mr-1" />{locating ? "Detecting…" : "Use my location"}
+                    </Button>
+                  </div>
                   <Input id="address" className="mt-2" placeholder="Flat, street, city" value={address} onChange={(e) => setAddress(e.target.value)} />
                 </div>
                 <div>

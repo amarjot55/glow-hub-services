@@ -27,10 +27,8 @@ export default function FeaturedProviders() {
               <div className="relative">
                 {/* Use the first portfolio image or a placeholder */}
                 <img
-                  src={provider.portfolio.length > 0 
-                    ? `https://source.unsplash.com/random/300x200/?${provider.portfolio[0].category}`
-                    : "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmVhdXR5JTIwc2Fsb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
-                  }
+                  src={provider.portfolio[0]?.imageUrl ?? provider.services[0]?.images?.[0]}
+                  loading="lazy"
                   alt={provider.name}
                   className="object-cover w-full h-48"
                 />
@@ -47,7 +45,10 @@ export default function FeaturedProviders() {
               
               <CardContent className="p-5 space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-glow-800">{provider.name}</h3>
+                  <div className="flex items-center gap-2">
+                    {provider.avatar && <img src={provider.avatar} alt="" className="h-8 w-8 rounded-full border border-glow-100" />}
+                    <h3 className="text-lg font-semibold text-glow-800">{provider.name}</h3>
+                  </div>
                   <p className="text-sm text-gray-500 line-clamp-1">{provider.bio}</p>
                 </div>
                 

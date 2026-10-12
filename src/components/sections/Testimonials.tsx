@@ -14,36 +14,36 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: "t1",
-    name: "Jennifer Williams",
-    location: "New York, NY",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    content: "I booked a makeup artist for my sister's wedding, and the experience was fantastic! The artist arrived on time, was super professional, and did an amazing job on all the bridesmaids. Will definitely use GlowHub again!",
+    name: "Aditi Bansal",
+    location: "Gurugram",
+    image: "https://api.dicebear.com/9.x/notionists/svg?seed=Aditi%20Bansal&backgroundColor=fde2e4,fad2e1,e2ece9,dfe7fd",
+    content: "I booked a makeup artist for my sister's mehendi and wedding, and the experience was fantastic! The artist arrived on time, was super professional, and did an amazing job on all the bridesmaids. Will definitely use GlowHub again!",
     service: "Bridal Makeup",
     rating: 5
   },
   {
     id: "t2",
-    name: "David Chen",
-    location: "San Francisco, CA",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
+    name: "Arjun Khanna",
+    location: "New Delhi",
+    image: "https://api.dicebear.com/9.x/notionists/svg?seed=Arjun%20Khanna&backgroundColor=fde2e4,fad2e1,e2ece9,dfe7fd",
     content: "As someone who dreads going to salons, having a haircut at home was a game-changer. My stylist was skilled, made me feel comfortable, and cleaned up afterward. Perfect service!",
     service: "Men's Haircut",
     rating: 5
   },
   {
     id: "t3",
-    name: "Michelle Rodriguez",
-    location: "Miami, FL",
-    image: "https://randomuser.me/api/portraits/women/63.jpg",
+    name: "Simran Kaur",
+    location: "Noida",
+    image: "https://api.dicebear.com/9.x/notionists/svg?seed=Simran%20Kaur&backgroundColor=fde2e4,fad2e1,e2ece9,dfe7fd",
     content: "I've been using GlowHub for monthly manicures, and it's so convenient. My regular nail tech is amazing - she's always on time and does beautiful work. Love not having to drive to a salon!",
     service: "Gel Manicure",
     rating: 4
   },
   {
     id: "t4",
-    name: "Sarah Johnson",
-    location: "Chicago, IL",
-    image: "https://randomuser.me/api/portraits/women/17.jpg",
+    name: "Pooja Reddy",
+    location: "Mumbai",
+    image: "https://api.dicebear.com/9.x/notionists/svg?seed=Pooja%20Reddy&backgroundColor=fde2e4,fad2e1,e2ece9,dfe7fd",
     content: "The facial service I booked was absolutely luxurious. The esthetician brought all professional equipment and products, and my skin looked amazing afterward. It felt like a spa came to me!",
     service: "Deep Cleansing Facial",
     rating: 5
@@ -59,7 +59,7 @@ export default function Testimonials() {
             What Our Customers Say
           </h2>
           <p className="text-lg text-gray-600">
-            Don't just take our word for it - hear from our satisfied customers
+            Sample reviews shown for this prototype
           </p>
         </div>
 

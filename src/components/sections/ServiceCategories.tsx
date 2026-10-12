@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { ServiceCategory } from "@/types";
+import { CATEGORY_IMAGES } from "@/data/mockData";
 
 type CategoryItem = {
   id: ServiceCategory;
@@ -74,18 +75,18 @@ export default function ServiceCategories() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-          {categories.map((category) => (
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
+          {categories.filter((c) => CATEGORY_IMAGES[c.id]).map((category) => (
             <Link
               key={category.id}
               to={`/services?category=${category.id}`}
               className="group"
             >
               <Card className="overflow-hidden transition-all border-glow-100 hover:shadow-md hover:border-glow-200 h-full">
-                <CardContent className="p-6 flex flex-col items-center text-center h-full">
-                  <div className="flex items-center justify-center w-16 h-16 mb-4 text-2xl bg-glow-50 rounded-full group-hover:bg-glow-100 transition-colors">
-                    {category.icon}
-                  </div>
+                <div className="h-32 overflow-hidden">
+                  <img src={CATEGORY_IMAGES[category.id]?.replace("w=800", "w=500")} alt={category.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                </div>
+                <CardContent className="p-4 flex flex-col items-center text-center">
                   <h3 className="mb-2 text-lg font-semibold text-glow-800">
                     {category.name}
                   </h3>

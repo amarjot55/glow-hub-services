@@ -44,11 +44,14 @@ export default function ProviderDetail() {
       <div className="container px-4 py-12 mx-auto md:px-6">
         <div className="max-w-5xl mx-auto space-y-6">
           <Card className="overflow-hidden">
-            <div className="h-32 bg-gradient-to-r from-glow-300 to-glow-600" />
+            <div className="h-40 md:h-52 relative overflow-hidden bg-glow-200">
+              <img src={p.portfolio[0]?.imageUrl} alt="" className="h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            </div>
             <CardContent className="p-6 -mt-12">
               <div className="flex flex-col md:flex-row md:items-end gap-4 justify-between">
                 <div className="flex items-end gap-4">
-                  <div className="h-24 w-24 rounded-full bg-white border-4 border-white shadow flex items-center justify-center text-3xl font-bold text-glow-600">{p.name.charAt(0)}</div>
+                  {p.avatar ? <img src={p.avatar} alt={p.name} className="h-24 w-24 rounded-full bg-white border-4 border-white shadow" /> : <div className="h-24 w-24 rounded-full bg-white border-4 border-white shadow flex items-center justify-center text-3xl font-bold text-glow-600">{p.name.charAt(0)}</div>}
                   <div>
                     <div className="flex items-center gap-2"><h1 className="text-2xl font-bold">{p.name}</h1>{p.verified && <Badge variant="secondary">Verified</Badge>}</div>
                     <p className="text-sm text-gray-500 flex items-center"><MapPin className="w-4 h-4 mr-1" />{p.location.city}, {p.location.state} · {p.experience} yrs experience</p>
@@ -70,11 +73,14 @@ export default function ProviderDetail() {
             <CardHeader><CardTitle>Services</CardTitle></CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               {p.services.map((s) => (
-                <div key={s.id} className="border rounded-lg p-4 flex flex-col gap-2">
+                <div key={s.id} className="border rounded-lg overflow-hidden flex flex-col">
+                  {s.images?.[0] && <img src={s.images[0]} alt={s.name} loading="lazy" className="h-36 w-full object-cover" />}
+                  <div className="p-4 flex flex-col gap-2 flex-1">
                   <div className="flex justify-between"><h3 className="font-medium">{s.name}</h3><span className="font-semibold">{formatCurrency(s.price)}</span></div>
                   <p className="text-sm text-gray-500">{s.description}</p>
                   <p className="text-xs text-gray-500 flex items-center"><Clock className="w-3 h-3 mr-1" />{s.durationMinutes} mins</p>
-                  <Link to={`/services/${s.id}`}><Button size="sm" className="w-full">Book</Button></Link>
+                  <Link to={`/services/${s.id}`} className="mt-auto"><Button size="sm" className="w-full">Book</Button></Link>
+                  </div>
                 </div>
               ))}
             </CardContent>
@@ -84,10 +90,10 @@ export default function ProviderDetail() {
             <CardHeader><CardTitle>Portfolio</CardTitle></CardHeader>
             <CardContent className="grid gap-4 grid-cols-2 md:grid-cols-3">
               {p.portfolio.map((item) => (
-                <div key={item.id} className="rounded-lg overflow-hidden border">
-                  <div className="h-28 bg-gradient-to-br from-glow-100 to-glow-300 flex items-center justify-center text-glow-700 text-sm font-medium px-2 text-center">{item.title}</div>
-                  {item.description && <p className="text-xs text-gray-500 p-2">{item.description}</p>}
-                </div>
+                <figure key={item.id} className="rounded-lg overflow-hidden border">
+                  <img src={item.imageUrl} alt={item.title} loading="lazy" className="h-40 w-full object-cover" />
+                  <figcaption className="p-2"><p className="text-sm font-medium">{item.title}</p>{item.description && <p className="text-xs text-gray-500">{item.description}</p>}</figcaption>
+                </figure>
               ))}
             </CardContent>
           </Card>

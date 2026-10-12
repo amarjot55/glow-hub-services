@@ -64,7 +64,7 @@ export default function Hero() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-glow-200/50">
               <img
-                src="https://images.unsplash.com/photo-1560750588-73207b1ef5b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                src="https://images.pexels.com/photos/19301315/pexels-photo-19301315.jpeg?auto=compress&cs=tinysrgb&w=900"
                 alt="Beauty professional providing service"
                 className="object-cover w-full h-full"
               />
@@ -93,7 +93,7 @@ export default function Hero() {
                 "Amazing experience! The stylist was professional and the service was top-notch."
               </p>
               <p className="mt-2 text-xs font-medium text-glow-700">
-                - Sarah J., New York
+                - Neha V., Gurugram (sample review)
               </p>
             </div>
 

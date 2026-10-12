@@ -37,7 +37,7 @@ export default function CTASection() {
             
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1596178060810-72c633523f3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                src="https://images.pexels.com/photos/5069612/pexels-photo-5069612.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Woman getting professional makeup service"
                 className="rounded-lg shadow-lg border-4 border-white/10"
               />

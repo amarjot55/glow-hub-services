@@ -45,9 +45,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data.email === 'provider@example.com' && data.password === 'password') {
         const mockUser: User = {
           id: 'sp1',
-          name: 'Emma Johnson',
+          name: 'Priya Sharma',
           email: data.email,
-          phone: '+1234567890',
+          phone: '+91 98110 20141',
           role: UserRole.SERVICE_PROVIDER,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -58,9 +58,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else if (data.email === 'client@example.com' && data.password === 'password') {
         const mockUser: User = {
           id: 'c1',
-          name: 'Sarah Johnson',
+          name: 'Neha Verma',
           email: data.email,
-          phone: '+1987654321',
+          phone: '+91 98765 11111',
           role: UserRole.CLIENT,
           createdAt: new Date(),
           updatedAt: new Date(),

@@ -25,7 +25,7 @@ export default function Services() {
   const [services, setServices] = useState<Service[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | "">(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 15000]);
   
   useEffect(() => {
     let filteredServices: Service[] = [];
@@ -128,15 +128,15 @@ export default function Services() {
                         <label className="text-sm font-medium">Price Range</label>
                         <div className="pt-4">
                           <Slider
-                            defaultValue={[0, 500]}
-                            max={500}
-                            step={10}
+                            value={priceRange}
+                            max={15000}
+                            step={500}
                             onValueChange={handlePriceChange}
                           />
                         </div>
                         <div className="flex items-center justify-between mt-2">
-                          <span className="text-sm text-gray-500">${priceRange[0]}</span>
-                          <span className="text-sm text-gray-500">${priceRange[1]}</span>
+                          <span className="text-sm text-gray-500">₹{priceRange[0].toLocaleString("en-IN")}</span>
+                          <span className="text-sm text-gray-500">₹{priceRange[1].toLocaleString("en-IN")}</span>
                         </div>
                       </div>
                       
@@ -191,7 +191,7 @@ export default function Services() {
                     <Button onClick={() => {
                       setSelectedCategory("");
                       setSearchQuery("");
-                      setPriceRange([0, 500]);
+                      setPriceRange([0, 15000]);
                     }}>
                       Clear All Filters
                     </Button>
@@ -205,7 +205,8 @@ export default function Services() {
                           <div className="relative h-40 bg-glow-100">
                             {service.images && service.images.length > 0 ? (
                               <img
-                                src={`https://source.unsplash.com/random/300x200/?${service.category}`}
+                                src={service.images[0]}
+                                loading="lazy"
                                 alt={service.name}
                                 className="w-full h-full object-cover"
                               />
@@ -235,9 +236,13 @@ export default function Services() {
                             {provider && (
                               <div className="mt-2 mb-auto">
                                 <div className="flex items-center text-sm mb-1">
-                                  <div className="h-6 w-6 rounded-full bg-glow-100 flex items-center justify-center mr-2">
-                                    <span className="text-xs">{provider.name.charAt(0)}</span>
-                                  </div>
+                                  {provider.avatar ? (
+                                    <img src={provider.avatar} alt="" className="h-6 w-6 rounded-full mr-2" />
+                                  ) : (
+                                    <div className="h-6 w-6 rounded-full bg-glow-100 flex items-center justify-center mr-2">
+                                      <span className="text-xs">{provider.name.charAt(0)}</span>
+                                    </div>
+                                  )}
                                   <span className="text-gray-700">{provider.name}</span>
                                 </div>
                                 
