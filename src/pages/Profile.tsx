@@ -2,12 +2,17 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDemo } from "@/contexts/DemoStore";
+import { toast } from "@/hooks/use-toast";
+import { UserRole } from "@/types";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { user, logout } = useAuth();
+  const { bookings, favourites, resetDemo } = useDemo();
+  const mine = user ? bookings.filter((b) => b.clientId === user.id || b.providerId === user.id) : [];
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -33,6 +38,18 @@ export default function Profile() {
                 </div>
               </div>
               
+              <div className="grid grid-cols-3 gap-4">
+                <div className="border rounded-lg p-4"><p className="text-sm text-gray-500">Role</p><p className="font-semibold">{user.role === UserRole.SERVICE_PROVIDER ? "Professional" : "Client"}</p></div>
+                <div className="border rounded-lg p-4"><p className="text-sm text-gray-500">Bookings</p><p className="font-semibold">{mine.length}</p></div>
+                <div className="border rounded-lg p-4"><p className="text-sm text-gray-500">Saved pros</p><p className="font-semibold">{favourites.length}</p></div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" onClick={() => navigate(user.role === UserRole.SERVICE_PROVIDER ? "/provider/dashboard" : "/bookings")}>
+                  {user.role === UserRole.SERVICE_PROVIDER ? "Open dashboard" : "My bookings"}
+                </Button>
+                <Button variant="outline" onClick={() => navigate("/notifications")}>Notifications</Button>
+                <Button variant="outline" onClick={() => { resetDemo(); toast({ title: "Demo data reset" }); }}>Reset demo data</Button>
+              </div>
               <div className="pt-6 border-t">
                 <Button variant="destructive" onClick={handleLogout}>
                   Logout

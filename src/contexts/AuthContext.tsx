@@ -39,13 +39,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     try {
       // Simulate API request
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 400));
       
       // Mock successful login for demo purposes
       if (data.email === 'provider@example.com' && data.password === 'password') {
         const mockUser: User = {
-          id: '1',
-          name: 'Jane Stylist',
+          id: 'sp1',
+          name: 'Emma Johnson',
           email: data.email,
           phone: '+1234567890',
           role: UserRole.SERVICE_PROVIDER,
@@ -57,8 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('user', JSON.stringify(mockUser));
       } else if (data.email === 'client@example.com' && data.password === 'password') {
         const mockUser: User = {
-          id: '2',
-          name: 'Sarah Client',
+          id: 'c1',
+          name: 'Sarah Johnson',
           email: data.email,
           phone: '+1987654321',
           role: UserRole.CLIENT,
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     try {
       // Simulate API request
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 400));
       
       // Mock user creation
       const mockUser: User = {

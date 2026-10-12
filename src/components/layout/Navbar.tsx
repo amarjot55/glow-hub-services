@@ -18,10 +18,13 @@ import {
   LogOut
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useDemo } from '@/contexts/DemoStore';
 import { UserRole } from '@/types';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { notifications } = useDemo();
+  const unread = user ? notifications.filter(n => n.userId === user.id && !n.read).length : 0;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,6 +68,15 @@ export default function Navbar() {
             </Button>
           </Link>
           
+          <Link to="/providers">
+            <Button
+              variant={isActive('/providers') ? 'default' : 'ghost'}
+              className={isActive('/providers') ? 'bg-glow-100 text-glow-800 hover:bg-glow-200' : ''}
+            >
+              Professionals
+            </Button>
+          </Link>
+
           {!user ? (
             <>
               <Link to="/login">
@@ -110,6 +122,15 @@ export default function Navbar() {
                 </Button>
               </Link>
               
+              <Link to="/notifications" aria-label="Notifications">
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="h-5 w-5" />
+                  {unread > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 rounded-full bg-rose-500 text-white text-[10px] leading-4">{unread}</span>
+                  )}
+                </Button>
+              </Link>
+
               <Link to="/profile">
                 <Button 
                   variant={isActive('/profile') ? 'default' : 'ghost'} 
@@ -170,6 +191,14 @@ export default function Navbar() {
                 <Search className="h-5 w-5 mr-3" />
                 Services
               </Link>
+              <Link 
+                to="/providers" 
+                className={`flex items-center p-3 rounded-md ${isActive('/providers') ? 'bg-glow-100 text-glow-700' : ''}`}
+                onClick={() => setOpen(false)}
+              >
+                <User className="h-5 w-5 mr-3" />
+                Professionals
+              </Link>
               {!user ? (
                 <>
                   <Link 
@@ -223,7 +252,7 @@ export default function Navbar() {
                     onClick={() => setOpen(false)}
                   >
                     <Bell className="h-5 w-5 mr-3" />
-                    Notifications
+                    Notifications{unread > 0 ? ` (${unread})` : ''}
                   </Link>
                   <Link 
                     to="/profile" 

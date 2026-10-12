@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,18 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const afterLogin = (asProvider: boolean) => navigate(params.get("next") || (asProvider ? "/provider/dashboard" : "/services"));
+
+  const demoLogin = async (asProvider: boolean) => {
+    const demoEmail = asProvider ? "provider@example.com" : "client@example.com";
+    setEmail(demoEmail);
+    setPassword("password");
+    try {
+      await login({ email: demoEmail, password: "password" });
+      afterLogin(asProvider);
+    } catch { /* shown by context */ }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +38,7 @@ export default function Login() {
 
     try {
       await login({ email, password });
-      navigate("/");
+      afterLogin(email === "provider@example.com");
     } catch (err) {
       // Error already handled in context
     }
@@ -86,24 +98,18 @@ export default function Login() {
               <div className="border-t border-gray-200 w-full"></div>
             </div>
             <div className="flex items-center justify-center space-x-2">
-              <div className="text-sm">For demo purposes, use:</div>
+              <div className="text-sm">One-click demo:</div>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {
-                  setEmail("provider@example.com");
-                  setPassword("password");
-                }}
+                onClick={() => demoLogin(true)}
               >
                 Provider Demo
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {
-                  setEmail("client@example.com");
-                  setPassword("password");
-                }}
+                onClick={() => demoLogin(false)}
               >
                 Client Demo
               </Button>

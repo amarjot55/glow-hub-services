@@ -19,7 +19,11 @@ import BookService from "./pages/BookService";
 import ProviderOnboarding from "./pages/provider/Onboarding";
 import ProfileSetup from "./pages/provider/ProfileSetup";
 import ServicesSetup from "./pages/provider/ServicesSetup";
-import SQLEditorPage from "./pages/SQLEditorPage";
+import Providers from "./pages/Providers";
+import ProviderDetail from "./pages/ProviderDetail";
+import InfoPage from "./pages/InfoPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import { DemoStoreProvider } from "./contexts/DemoStore";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +32,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
+        <DemoStoreProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -43,12 +48,18 @@ const App = () => (
               <Route path="/provider/onboarding" element={<ProviderOnboarding />} />
               <Route path="/provider/profile-setup" element={<ProfileSetup />} />
               <Route path="/provider/services-setup" element={<ServicesSetup />} />
-              <Route path="/sql-editor" element={<SQLEditorPage />} />
+              <Route path="/providers" element={<Providers />} />
+              <Route path="/providers/:providerId" element={<ProviderDetail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              {["about","careers","blog","contact","privacy","terms","faq"].map((p) => (
+                <Route key={p} path={`/${p}`} element={<InfoPage page={p} />} />
+              ))}
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
             <Sonner />
           </BrowserRouter>
+        </DemoStoreProvider>
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>

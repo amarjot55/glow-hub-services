@@ -1,167 +1,116 @@
-
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { getServiceById, getProviderById, formatCurrency } from "@/data/mockData";
-import { Service, ServiceProvider } from "@/types";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-import { Clock, MapPin, CalendarDays } from "lucide-react";
+import { Clock, MapPin, CalendarDays, Home } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useDemo } from "@/contexts/DemoStore";
+import { DateTimePicker } from "@/components/bookings/BookingParts";
+import { UserRole } from "@/types";
 
 export default function BookService() {
   const { serviceId } = useParams();
   const navigate = useNavigate();
-  const [service, setService] = useState<Service | null>(null);
-  const [provider, setProvider] = useState<ServiceProvider | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const { user } = useAuth();
+  const { createBooking } = useDemo();
+  const service = serviceId ? getServiceById(serviceId) : undefined;
+  const provider = service ? getProviderById(service.providerId) : undefined;
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (serviceId) {
-      const serviceData = getServiceById(serviceId);
-      if (serviceData) {
-        setService(serviceData);
-        const providerData = getProviderById(serviceData.providerId);
-        if (providerData) {
-          setProvider(providerData);
-        }
-      }
-    }
-  }, [serviceId]);
-
-  const availableTimes = [
-    "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00"
-  ];
-
-  const handleBooking = () => {
-    if (!selectedDate || !selectedTime) {
-      toast({
-        title: "Please select a date and time",
-        description: "Both date and time are required to book the service",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // In a real app, this would make an API call to create the booking
-    toast({
-      title: "Booking Confirmed!",
-      description: `Your appointment is scheduled for ${format(selectedDate, 'PPP')} at ${selectedTime}`,
-    });
-    navigate("/bookings");
-  };
+  const [address, setAddress] = useState("");
+  const [notes, setNotes] = useState("");
 
   if (!service || !provider) {
     return (
       <Layout>
-        <div className="container px-4 py-12">
-          <Card>
-            <CardContent className="p-6">
-              <p>Service not found</p>
-            </CardContent>
-          </Card>
+        <div className="container px-4 py-12 text-center">
+          <h1 className="text-2xl font-bold mb-2">Service not found</h1>
+          <p className="text-gray-500 mb-6">It may have been removed by the provider.</p>
+          <Button onClick={() => navigate("/services")}>Browse services</Button>
         </div>
       </Layout>
     );
   }
 
+  const fee = Math.round(service.price * 0.2);
+
+  const handleBooking = () => {
+    if (!user) {
+      toast({ title: "Please log in to book", description: "Use the Client Demo button for a one-click login." });
+      navigate(`/login?next=/services/${service.id}`);
+      return;
+    }
+    if (user.role === UserRole.SERVICE_PROVIDER) {
+      toast({ title: "Switch to a client account", description: "Providers can't book services. Log in with the Client Demo.", variant: "destructive" });
+      return;
+    }
+    if (!selectedDate || !selectedTime || address.trim().length < 5) {
+      toast({ title: "A few details are missing", description: "Pick a date, a time and enter the address for the visit.", variant: "destructive" });
+      return;
+    }
+    createBooking({ serviceId: service.id, clientId: user.id, clientName: user.name, date: selectedDate, time: selectedTime, address: address.trim(), notes: notes.trim() || undefined });
+    toast({ title: "Booking requested!", description: `${provider.name} will confirm ${format(selectedDate, "PPP")} at ${selectedTime}.` });
+    navigate("/bookings");
+  };
+
   return (
     <Layout>
       <div className="container px-4 py-12 mx-auto md:px-6">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold text-glow-800 mb-8">Book Service</h1>
-          
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Service Details */}
             <Card>
-              <CardHeader>
-                <CardTitle>{service.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-gray-600">{service.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-lg">
-                      {formatCurrency(service.price)}
-                    </span>
-                    <span className="text-gray-500 flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {service.durationMinutes} mins
-                    </span>
-                  </div>
-                  
-                  <div className="pt-4 border-t">
-                    <p className="font-medium mb-2">Provider</p>
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 rounded-full bg-glow-100 flex items-center justify-center mr-3">
-                        <span className="text-glow-600 font-medium">
-                          {provider.name.charAt(0)}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-medium">{provider.name}</p>
-                        <p className="text-sm text-gray-500 flex items-center">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          {provider.location.city}, {provider.location.state}
-                        </p>
-                      </div>
+              <CardHeader><CardTitle>{service.name}</CardTitle></CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-gray-600">{service.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-lg">{formatCurrency(service.price)}</span>
+                  <span className="text-gray-500 flex items-center"><Clock className="w-4 h-4 mr-1" />{service.durationMinutes} mins</span>
+                </div>
+                {service.inHomeService && <p className="text-sm text-glow-700 flex items-center"><Home className="w-4 h-4 mr-1" />At-home service</p>}
+                <div className="pt-4 border-t">
+                  <p className="font-medium mb-2">Provider</p>
+                  <Link to={`/providers/${provider.id}`} className="flex items-center hover:opacity-80">
+                    <div className="h-10 w-10 rounded-full bg-glow-100 flex items-center justify-center mr-3">
+                      <span className="text-glow-600 font-medium">{provider.name.charAt(0)}</span>
                     </div>
-                  </div>
+                    <div>
+                      <p className="font-medium">{provider.name} · ⭐ {provider.rating}</p>
+                      <p className="text-sm text-gray-500 flex items-center"><MapPin className="w-4 h-4 mr-1" />{provider.location.city}, {provider.location.state}</p>
+                    </div>
+                  </Link>
+                </div>
+                <div className="pt-4 border-t text-sm space-y-1">
+                  <div className="flex justify-between"><span>Service</span><span>{formatCurrency(service.price)}</span></div>
+                  <div className="flex justify-between text-gray-500"><span>Platform fee (20%)</span><span>{formatCurrency(fee)}</span></div>
+                  <div className="flex justify-between font-semibold pt-1"><span>Total</span><span>{formatCurrency(service.price + fee)}</span></div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Booking Form */}
             <Card>
-              <CardHeader>
-                <CardTitle>Select Date & Time</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <Label>Select Date</Label>
-                    <Calendar
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={setSelectedDate}
-                      className="rounded-md border mt-2"
-                      disabled={(date) => 
-                        date < new Date() || 
-                        date.getDay() === 0 // Sunday
-                      }
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Select Time</Label>
-                    <div className="grid grid-cols-3 gap-2 mt-2">
-                      {availableTimes.map((time) => (
-                        <Button
-                          key={time}
-                          variant={selectedTime === time ? "default" : "outline"}
-                          className="w-full"
-                          onClick={() => setSelectedTime(time)}
-                        >
-                          {time}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Button 
-                    className="w-full" 
-                    size="lg"
-                    onClick={handleBooking}
-                    disabled={!selectedDate || !selectedTime}
-                  >
-                    <CalendarDays className="mr-2 h-5 w-5" />
-                    Confirm Booking
-                  </Button>
+              <CardHeader><CardTitle>Date, time & address</CardTitle></CardHeader>
+              <CardContent className="space-y-5">
+                <DateTimePicker date={selectedDate} time={selectedTime} onDate={setSelectedDate} onTime={setSelectedTime} />
+                <div>
+                  <Label htmlFor="address">Address for the visit</Label>
+                  <Input id="address" className="mt-2" placeholder="Flat, street, city" value={address} onChange={(e) => setAddress(e.target.value)} />
                 </div>
+                <div>
+                  <Label htmlFor="notes">Notes for the provider (optional)</Label>
+                  <Textarea id="notes" className="mt-2" placeholder="Occasion, allergies, preferences" value={notes} onChange={(e) => setNotes(e.target.value)} />
+                </div>
+                <Button className="w-full" size="lg" onClick={handleBooking}>
+                  <CalendarDays className="mr-2 h-5 w-5" />
+                  {user ? "Request booking" : "Log in to book"}
+                </Button>
               </CardContent>
             </Card>
           </div>
